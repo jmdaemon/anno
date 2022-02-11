@@ -1,18 +1,47 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
 
 export AppWindow := Window {
-    property<int> counter: 42;
-    callback request-increase-value();
-    VerticalBox {
-        Text {
-            text: "Counter: \{counter}";
+    callback open-file();
+    callback new-note();
+
+VerticalBox {
+    HorizontalBox {
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+
+        min-width: 128px;
+        min-height: 32px;
+        max-height: 48px;
+
+        horizontal-stretch: 1;
+        vertical-stretch: 0;
+        Button {
+            text: "Open";
+            clicked => { open-file(); }
+            padding: 0px;
         }
         Button {
-            text: "Increase value";
-            clicked => { 
-                request-increase-value();
-            }
+            text: "New Note";
+            clicked => { new-note(); }
+            padding: 0px;
         }
-     }
+        Button {
+            text: "About";
+            clicked => { new-note(); }
+        }
+    }
+
+    ScrollView {
+            min-width: 200px;
+            min-height: 200px;
+            horizontal-stretch: 0;
+            vertical-stretch: 1;
+
+            viewport-width: 300px;
+            viewport-height: 300px;
+
+        }
+    }
 }
 
