@@ -6,7 +6,7 @@ PDF := Rectangle {}
 
 export AppWindow := Window {
     callback open-file();
-    callback new-note();
+    callback new-file();
 
     property <PDFData> pdf;
 
@@ -28,8 +28,8 @@ export AppWindow := Window {
                 padding: 0px;
             }
             Button {
-                text: "New Note";
-                clicked => { new-note(); }
+                text: "New";
+                clicked => { new-file(); }
                 padding: 0px;
             }
             Button {
