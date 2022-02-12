@@ -1,47 +1,53 @@
 import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
 
+struct PDFData := { content: string, }
+
+PDF := Rectangle {}
+
 export AppWindow := Window {
     callback open-file();
     callback new-note();
 
-VerticalBox {
-    HorizontalBox {
-        padding-top: 0px;
-        padding-left: 0px;
-        padding-right: 0px;
+    property <PDFData> pdf;
 
-        min-width: 128px;
-        min-height: 32px;
-        max-height: 48px;
+    VerticalBox {
+        HorizontalBox {
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
 
-        horizontal-stretch: 1;
-        vertical-stretch: 0;
-        Button {
-            text: "Open";
-            clicked => { open-file(); }
-            padding: 0px;
+            min-width: 128px;
+            min-height: 32px;
+            max-height: 48px;
+
+            horizontal-stretch: 1;
+            vertical-stretch: 0;
+            Button {
+                text: "Open";
+                clicked => { open-file(); }
+                padding: 0px;
+            }
+            Button {
+                text: "New Note";
+                clicked => { new-note(); }
+                padding: 0px;
+            }
+            Button {
+                text: "About";
+                clicked => { new-note(); }
+            }
         }
-        Button {
-            text: "New Note";
-            clicked => { new-note(); }
-            padding: 0px;
-        }
-        Button {
-            text: "About";
-            clicked => { new-note(); }
-        }
-    }
 
-    ScrollView {
-            min-width: 200px;
-            min-height: 200px;
-            horizontal-stretch: 0;
-            vertical-stretch: 1;
+        ScrollView {
+                min-width: 200px;
+                min-height: 200px;
+                horizontal-stretch: 0;
+                vertical-stretch: 1;
 
-            viewport-width: 300px;
-            viewport-height: 300px;
-
-        }
+                viewport-width: 300px;
+                viewport-height: 300px;
+                Text { text: pdf.content; }
+            }
     }
 }
 
