@@ -1,6 +1,9 @@
 import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
 
-struct PDFData := { content: string, }
+struct PDFData := {
+content: string,
+img: string,
+}
 
 PDF := Rectangle {}
 
@@ -47,6 +50,7 @@ export AppWindow := Window {
                 viewport-width: 300px;
                 viewport-height: 300px;
                 Text { text: pdf.content; }
+                Image { source: pdf.img; }
             }
     }
 }
