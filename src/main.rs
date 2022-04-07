@@ -1,7 +1,11 @@
+extern crate cairo;
+use cairo::{PdfSurface, Context};
 use clap::{Arg, App};
-//use poppler::{PopplerDocument, PopplerPage};
+use poppler::{PopplerDocument, PopplerPage};
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow};
+//use gdk::prelude::*;
+use gtk::{Application, ApplicationWindow, DrawingArea};
+//use gtk::cairo::PdfSurface;
 
 fn main() {
     let matches = App::new("Anno")
@@ -11,9 +15,25 @@ fn main() {
         .arg(Arg::new("fp").help("File path to the pdf"))
         .get_matches();
 
-    let _fp = matches.value_of("fp").unwrap_or("");
+    let fp = matches.value_of("fp").unwrap_or("");
 
-    //let file: PopplerDocument = PopplerDocument::new_from_file(fp, "").unwrap();
+    let file: PopplerDocument = PopplerDocument::new_from_file(fp, "").unwrap();
+
+    //let surface = PdfSurface::new(1920, 1080, fp);
+    //let ctx = cairo::Context::new(surface);
+
+    let page = file.get_page(0).unwrap();
+    let (width, height) = page.get_size();
+    
+    let surface = PdfSurface::new(width, height, fp).unwrap();
+    let ctx = Context::new(&surface).unwrap();
+    ctx.paint();
+
+    page.render(&ctx);
+    
+    //file.();
+
+    //let pdf_surface = PdfSurface::new();
     
     // Get the first page
     //let page: PopplerPage = file.get_page(0).unwrap();
@@ -37,6 +57,11 @@ fn build_ui(app: &Application) {
         .application(app)
         .title("Anno")
         .build();
+
+    //gtk::DrawingArea::new();
+    //let drawarea = gtk::DrawingArea::new()
+    //drawarea.set_content_width(640)
+        //.set_content_height(480);
 
     // Present window
     window.present();

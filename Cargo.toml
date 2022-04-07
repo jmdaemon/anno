@@ -7,5 +7,7 @@ edition = "2021"
 
 [dependencies]
 clap = "3.0.14"
-#poppler = "0.3.1"
+poppler = "0.3.1"
 gtk = { version = "0.4.6", package = "gtk4" }
+gdk = { version = "0.4.6", package = "gdk4" }
+cairo = { version = "0.15.10", package = "cairo-rs" }
