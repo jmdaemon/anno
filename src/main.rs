@@ -47,8 +47,10 @@ fn main() {
     // Connect to "activate" signal of `app`
     app.connect_activate(build_ui);
 
+    // Accept command line arguments but don't do anything
+    // This is a temporary hack to be able to pass in command line arguments
     // Run the application
-    app.run();
+    app.run_with_args(&[""]);
 }
 
 fn build_ui(app: &Application) {
