@@ -1,7 +1,3 @@
-#pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-#pkgdatadir = meson.project_name() / 'resources/gtk'
-#pkgdatadir = '../resources/gtk'
-#pkgdatadir = '../src'
 pkgdatadir = 'src'
 gnome = import('gnome')
 
@@ -19,9 +15,9 @@ conf.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('locale
 conf.set_quoted('PKGDATADIR', pkgdatadir)
 
 configure_file(
-    input: 'config.rs.in',
-    output: 'config.rs',
-    configuration: conf
+  input: 'config.rs.in',
+  output: 'config.rs',
+  configuration: conf
 )
 
 # Copy the config.rs output to the source directory.
@@ -37,6 +33,8 @@ rust_sources = files(
   'config.rs',
   'main.rs',
   'window.rs',
+  'anno.rs',
+  'fileview.rs',
 )
 
 sources = [cargo_sources, rust_sources]

@@ -1,16 +1,39 @@
 mod application;
 mod config;
 mod window;
+mod anno;
+//mod arguments;
+//mod fileview;
 
+// Imports
 use self::application::AnnoApplication;
 use self::window::AnnoWindow;
-
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
+//use self::anno::Arguments;
+//use anno::Arguments;
+//use anno::Arguments;
+
+// Third Party Libraries
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
 use gtk::gio;
 use gtk::prelude::*;
+use clap::{Arg, Command};
 
 fn main() {
+    // Parse cli args using clap
+    let matches = Command::new("Anno")
+        .version("0.1.0")
+        .author("Joseph Diza <josephm.diza@gmail.com>")
+        .about("Easily create beautiful, customizable annotations for pdfs")
+        .arg(Arg::new("fp").help("File path to the pdf"))
+        .get_matches();
+
+    // Set new arguments
+    let file = matches.value_of("fp").unwrap_or("").to_owned();
+    //Arguments { debug_mode: true, fp: file }.make_current();
+    anno::Arguments { verbose: false, fp: file }.make_current();
+    println!("Set arguments to: {}, {}\n", anno::Arguments::current().verbose, anno::Arguments::current().fp);
+
     // Set up gettext translations
     bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
@@ -31,5 +54,5 @@ fn main() {
     // exits. Upon return, we have our exit code to return to the shell. (This
     // is the code you see when you do `echo $?` after running a command in a
     // terminal.
-    std::process::exit(app.run());
+    std::process::exit(app.run_with_args(&[""]));
 }
