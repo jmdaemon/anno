@@ -1,61 +1,35 @@
-use cairo::{PdfSurface, Context};
-use clap::{Arg, Command};
-use poppler::{PopplerDocument, PopplerPage};
+mod application;
+mod config;
+mod window;
+
+use self::application::AnnoApplication;
+use self::window::AnnoWindow;
+
+use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
+use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
+use gtk::gio;
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Box, DrawingArea};
 
 fn main() {
-    let matches = Command::new("Anno")
-        .version("0.1.0")
-        .author("Joseph Diza <josephm.diza@gmail.com>")
-        .about("Easily create beautiful, customizable annotations for pdfs")
-        .arg(Arg::new("fp").help("File path to the pdf"))
-        .get_matches();
+    // Set up gettext translations
+    bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
+        .expect("Unable to set the text domain encoding");
+    textdomain(GETTEXT_PACKAGE).expect("Unable to switch to the text domain");
 
-    let _fp = matches.value_of("fp").unwrap_or("").to_owned();
+    // Load resources
+    let resources = gio::Resource::load(PKGDATADIR.to_owned() + "/anno.gresource")
+        .expect("Could not load resources");
+    gio::resources_register(&resources);
 
-    // Create application
-    let app = Application::builder()
-        .application_id("io.github.jmdaemon.anno")
-        .build();
+    // Create a new GtkApplication. The application manages our main loop,
+    // application windows, integration with the window manager/compositor, and
+    // desktop features such as file opening and single-instance applications.
+    let app = AnnoApplication::new("io.github.jmdaemon.anno", &gio::ApplicationFlags::empty());
 
-    // Connect to "activate" signal of `app`
-    app.connect_activate(build_ui);
-
-    // Accept command line arguments but don't do anything
-    // This is a temporary hack to be able to pass in command line arguments
-    // Run the application
-    app.run_with_args(&[""]);
-}
-
-/// Displays pages from the pdf file
-fn show_pdf(_area: &gtk::DrawingArea, ctx: &cairo::Context, _width: i32, _height: i32) {
-    let fp = "The C Programming Language.pdf";
-    let file: PopplerDocument = PopplerDocument::new_from_file(fp, "").unwrap();
-    let page: PopplerPage = file.get_page(0).unwrap();
-    page.render(ctx);
-}
-
-fn build_ui(app: &Application) {
-    // Create a window and set the title
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("Anno")
-        .build();
-
-    // Pack Widgets into Box
-    let gtkbox = Box::new(gtk::Orientation::Vertical, 0);
-
-    // Create drawing widget
-    let drawarea = DrawingArea::new();
-    drawarea.set_content_width(1280);
-    drawarea.set_content_height(720);
-    drawarea.set_draw_func(show_pdf);
-
-    gtkbox.append(&drawarea);
-
-    window.set_child(Some(&gtkbox));
-
-    // Present window
-    window.present();
+    // Run the application. This function will block until the application
+    // exits. Upon return, we have our exit code to return to the shell. (This
+    // is the code you see when you do `echo $?` after running a command in a
+    // terminal.
+    std::process::exit(app.run());
 }

@@ -1,0 +1,4 @@
+data/io.github.jmdaemon.anno.desktop.in
+data/io.github.jmdaemon.anno.appdata.xml.in
+data/io.github.jmdaemon.anno.gschema.xml
+src/window.ui
