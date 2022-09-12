@@ -2,16 +2,12 @@ mod application;
 mod config;
 mod window;
 mod anno;
-//mod arguments;
-//mod fileview;
 
 // Imports
 use self::application::AnnoApplication;
 use self::window::AnnoWindow;
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
-//use self::anno::Arguments;
-//use anno::Arguments;
-//use anno::Arguments;
+use crate::anno::Arguments;
 
 // Third Party Libraries
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
@@ -30,9 +26,8 @@ fn main() {
 
     // Set new arguments
     let file = matches.value_of("fp").unwrap_or("").to_owned();
-    //Arguments { debug_mode: true, fp: file }.make_current();
-    anno::Arguments { verbose: false, fp: file }.make_current();
-    println!("Set arguments to: {}, {}\n", anno::Arguments::current().verbose, anno::Arguments::current().fp);
+    Arguments { verbose: false, fp: file }.make_current();
+    println!("Set arguments to: {}, {}\n", Arguments::current().verbose, Arguments::current().fp);
 
     // Set up gettext translations
     bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
