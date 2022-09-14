@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/io/github/jmdaemon/anno">
     <file>../resources/gtk/window.ui</file>
+    <file>../resources/gtk/mainwidget.ui</file>
     <file>../resources/gtk/help-overlay.ui</file>
   </gresource>
 </gresources>

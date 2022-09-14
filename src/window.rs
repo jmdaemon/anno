@@ -1,8 +1,12 @@
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{gio, glib, CompositeTemplate};
-use anno::fileview::imp::FileView;
-use anno::fileview::FileView as FV;
+
+//use anno::fileview::imp::FileView;
+//use anno::fileview::FileView as FV;
+
+use anno::mainwidget::imp::MainWidget;
+use anno::mainwidget::MainWidget as MW;
 
 mod imp {
     use super::*;
@@ -15,7 +19,8 @@ mod imp {
         pub header_bar: TemplateChild<gtk::HeaderBar>,
         #[template_child]
         pub label: TemplateChild<gtk::Label>,
-        pub fileview: FileView,
+        //pub fileview: FileView,
+        pub mainwidget: MainWidget,
     }
 
     #[glib::object_subclass]
@@ -51,8 +56,10 @@ impl AnnoWindow {
             .expect("Failed to create AnnoWindow");
 
         // Setup the file view
-        let fv = FV::new();
-        window.set_child(Some(&fv));
+        //let fv = FV::new();
+        //window.set_child(Some(&fv));
+        let mw = MW::new();
+        window.set_child(Some(&mw));
         window
     }
 }

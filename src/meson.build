@@ -35,6 +35,7 @@ rust_sources = files(
   'window.rs',
   'anno.rs',
   'fileview.rs',
+  'mainwidget.rs',
 )
 
 sources = [cargo_sources, rust_sources]
