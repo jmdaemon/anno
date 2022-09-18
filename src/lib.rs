@@ -3,3 +3,4 @@
 pub mod anno;
 pub mod fileview;
 pub mod mainwidget;
+pub mod pageobject;

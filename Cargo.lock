@@ -21,6 +21,7 @@ dependencies = [
  "gettext-rs",
  "glib",
  "gtk4",
+ "once_cell",
  "poppler",
 ]
 

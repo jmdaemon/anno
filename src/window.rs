@@ -1,12 +1,11 @@
+// Imports
+use anno::mainwidget::imp::MainWidget;
+use anno::mainwidget::MainWidget as MW;
+
+// Third Party Libraries
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{gio, glib, CompositeTemplate};
-
-//use anno::fileview::imp::FileView;
-//use anno::fileview::FileView as FV;
-
-use anno::mainwidget::imp::MainWidget;
-use anno::mainwidget::MainWidget as MW;
 
 mod imp {
     use super::*;
@@ -21,6 +20,9 @@ mod imp {
         pub label: TemplateChild<gtk::Label>,
         //pub fileview: FileView,
         pub mainwidget: MainWidget,
+
+        //pub lv_toc: gtk::ListView,
+        //pub slif_toc: gtk::SignalListItemFactory,
     }
 
     #[glib::object_subclass]
@@ -38,7 +40,9 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for AnnoWindow {}
+    impl ObjectImpl for AnnoWindow {
+
+    }
     impl WidgetImpl for AnnoWindow {}
     impl WindowImpl for AnnoWindow {}
     impl ApplicationWindowImpl for AnnoWindow {}
@@ -55,11 +59,25 @@ impl AnnoWindow {
         let window: AnnoWindow = glib::Object::new(&[("application", application)])
             .expect("Failed to create AnnoWindow");
 
-        // Setup the file view
-        //let fv = FV::new();
-        //window.set_child(Some(&fv));
+        // Setup the main widget
         let mw = MW::new();
+        //self.mainwidget.nb_sidebar.append_page(&lv_toc, Some(&lbl_toc));
+        mw.imp().nb_sidebar.append_page(&mw.imp().lv_toc.take(), Some(&mw.imp().lbl_toc.take()));
+
         window.set_child(Some(&mw));
+
+        // Setup the header bar
+        // We need to setup an item factory, model
+        //let toc_model = gio::ListStore::new(gtk::GObject::static_type());
+
+        //let slif_toc = gtk::SignalListItemFactory::new();
+        //let toc_model = gio::ListStore::new(PageObject::static_type());
+        //let ss_toc = gtk::SingleSelection::new(Some(&toc_model));
+        //let lv_toc = gtk::ListView::new(Some(&ss_toc), Some(&slif_toc));
+        //let lbl_toc = gtk::Label::new(Some(&"Table of Contents"));
+        //window.imp().mainwidget.nb_sidebar.append_page(&lv_toc, Some(&lbl_toc));
+
+        //window.imp().lv_toc = lv_toc;
         window
     }
 }
