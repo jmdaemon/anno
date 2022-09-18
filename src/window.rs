@@ -64,6 +64,7 @@ impl AnnoWindow {
         //self.mainwidget.nb_sidebar.append_page(&lv_toc, Some(&lbl_toc));
         mw.imp().nb_sidebar.append_page(&mw.imp().lv_toc.take(), Some(&mw.imp().lbl_toc.take()));
 
+        window.set_title(Some(&"Anno"));
         window.set_child(Some(&mw));
 
         // Setup the header bar
