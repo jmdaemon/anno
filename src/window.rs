@@ -1,6 +1,9 @@
 // Imports
-use anno::mainwidget::imp::MainWidget;
-use anno::mainwidget::MainWidget as MW;
+//use anno::mainwidget::imp::MainWidget;
+//use anno::mainwidget::MainWidget as MW;
+
+use crate::mainwidget::imp::MainWidget;
+use crate::mainwidget::MainWidget as MW;
 
 // Third Party Libraries
 use gtk::prelude::*;

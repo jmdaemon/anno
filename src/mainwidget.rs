@@ -91,7 +91,7 @@ impl MainWidget {
         fv.set_height_request(860);
         fv.set_width_request(600);
 
-        //mainwidget.attach(&fv, 1, 1, 1, 1);
+        mainwidget.attach(&fv, 1, 1, 1, 1);
 
         //let label = gtk::Label::new(Some("Table of Contents"));
         //mainwidget.imp().nb_sidebar.append_page(&label, Some(&label));

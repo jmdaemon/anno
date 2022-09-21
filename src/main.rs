@@ -1,13 +1,27 @@
+//#![feature(once_cell)] 
+#![feature(once_cell)] 
+
+mod anno;
+mod fileview;
+mod mainwidget;
+mod pageobject;
+
 mod application;
 mod config;
 mod window;
-mod anno;
+//mod anno;
 
 // Imports
 use self::application::AnnoApplication;
 use self::window::AnnoWindow;
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
-use crate::anno::Arguments;
+//use crate::anno::{Arguments, CURRENT_ARGS};
+use crate::anno::{Arguments, ArgumentsState, ARGS};
+//use crate::anno::Arguments;
+
+// Standard Libraries
+use std::sync::{Arc, RwLock};
+use std::sync::Mutex;
 
 // Third Party Libraries
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
@@ -26,8 +40,56 @@ fn main() {
 
     // Set new arguments
     let file = matches.value_of("fp").unwrap_or("").to_owned();
-    Arguments { verbose: false, fp: file }.make_current();
-    println!("Set arguments to: {}, {}\n", Arguments::current().verbose, Arguments::current().fp);
+    //let mut fp = file.as_str();
+    //CURRENT_ARGS = RwLock::new(Arc::new(Arguments { verbose: false, fp: file }));
+    //println!("Set arguments to: {}, {}\n", curr.verbose, curr.fp);
+
+    //anno::CURRENT_ARGS = Arguments { verbose: false, fp: file };
+
+    //let args = Arguments::get();
+    //let args = Arguments::global();
+    //let mut args = anno::global();
+    //args.lock();
+    //args.set_path(file.as_str());
+    //ARGS.set(Mutex::new(args));
+    //let args = ArgumentsState { verbose: false, fp: file };
+
+    let mut args = anno::global();
+    args.set_path(&file);
+    //Arguments::set_path(&mut self, path)
+    //ARGS.set(args);
+    //args.lock().set_path(file.as_str());
+    
+    //let args = Arguments { verbose: false, fp: file };
+    ////ARGS = args;
+    ////Arguments::from_args(args);
+    //ARGS.set(args).unwrap();
+    
+
+    //CURRENT_ARGS = RwLock::new(args);
+    //CURRENT_ARGS.lock().unwrap().push(args);
+
+    //{
+        //let mut rw_args = CURRENT_ARGS.write().unwrap();
+        //*rw_args = args;
+    //}
+
+    //let curr = CURRENT_ARGS.read().unwrap();
+    //println!("Set arguments to: {}, {}\n", curr.verbose, curr.fp);
+
+    //RwLock::new(args)
+
+    //Arguments { verbose: false, fp: file }.make_current();
+    //println!("Set arguments to: {}, {}\n", Arguments::current().verbose, Arguments::current().fp);
+
+    //let args: Arguments = Arguments { verbose: false, fp: file };
+    //CURRENT_ARGS.store(Arc::new(args));
+    //CURRENT_ARGS.store(Arc::new(Arguments { verbose: false, fp: file }));
+    //println!("Set arguments to: {}, {}\n", curr.verbose, curr.fp);
+
+    //let curr = CURRENT_ARGS.load();
+    //println!("Set arguments to: {}, {}\n", curr.verbose.clone(), curr.fp.clone());
+
 
     // Set up gettext translations
     bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
