@@ -1,42 +1,35 @@
 use once_cell::sync::OnceCell;
-use std::sync::Mutex;
-use std::sync::MutexGuard;
+use std::sync::{Mutex, MutexGuard};
 
-// Arguments Singleton Struct
-
+/**
+  * Arguments Singleton Struct
+  * Struct with a mutex that locks for callers when the struct's methods are called
+  */
 #[derive(Debug, Default)]
 pub struct ArgumentsState {
     pub verbose: bool,
     pub fp: String,
 }
 
-// TODO: Make more generic
-
 pub struct Arguments {
     inner: &'static Mutex<ArgumentsState>,
-}
-
-pub static ARGS: OnceCell<Mutex<ArgumentsState>> = OnceCell::new();
-pub fn global() -> Arguments {
-    Arguments {
-        inner: ARGS.get_or_init(|| Mutex::new(Default::default() )),
-    }
 }
 
 pub struct ArgumentsLock<'a> {
     inner: MutexGuard<'a, ArgumentsState>,
 }
 
-// Lock for multiple callers
-impl ArgumentsLock<'_> {
-    pub fn get_path(&mut self) -> String {
-        self.inner.fp.clone()
-    }
 
-    pub fn set_path(&mut self, path: &str) {
-        self.inner.fp = path.to_string();
+pub static ARGS: OnceCell<Mutex<ArgumentsState>> = OnceCell::new();
+
+pub fn global() -> Arguments {
+    Arguments {
+        inner: ARGS.get_or_init(|| Mutex::new(Default::default() )),
     }
 }
+
+// Lock for multiple callers
+impl ArgumentsLock<'_> { }
 
 impl Arguments {
     pub fn lock(&self) -> ArgumentsLock<'_> { 
